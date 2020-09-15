@@ -1,0 +1,8 @@
+prefix=/home/yong/ros_buoy_ws/install
+
+Name: get_sound_data
+Description: Description of get_sound_data
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
