@@ -1,7 +1,7 @@
 DEVICE_NAME_            : "Focusrite 2i2"
-pcm_name_               : "hw:0,0"
-pcm_frames_             : 100
-pcm_sampleRate_         : 44100
+pcm_name_               : "hw:1,0"
+pcm_frames_             : 50
+pcm_sampleRate_         : 96000
 pcm_available_channels_ : 2
 pcm_using_channels_     : 2
 pcm_loops_              : 0

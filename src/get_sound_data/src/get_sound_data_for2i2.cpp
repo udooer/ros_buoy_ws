@@ -62,22 +62,22 @@ hydrophone_data_node::hydrophone_data_node():
 //    pcm_available_channels_(2),
 //    pcm_using_channels_(2),
 //    //pcm_recordTime_(10),
-//    pcm_loops_(0),
-    
-pcm_bits_(sizeof(int32_t) * 8)
+//    pcm_loops_(0),    
+	pcm_bits_(sizeof(int32_t) * 8),
+	nh("~")
 {
-	nh.getParam("/get_sound_data_for2i2/DEVICE_NAME_", DEVICE_NAME_);
-	nh.getParam("/get_sound_data_for2i2/pcm_name_", pcm_name_);
+	nh.getParam("DEVICE_NAME_", DEVICE_NAME_);
+	nh.getParam("pcm_name_", pcm_name_);
 	double tmp;
-	nh.getParam("/get_sound_data_for2i2/pcm_available_channels_", tmp);
+	nh.getParam("pcm_available_channels_", tmp);
 	pcm_available_channels_ = tmp;
-	nh.getParam("/get_sound_data_for2i2/pcm_frames_", tmp);
+	nh.getParam("pcm_frames_", tmp);
     pcm_frames_ = tmp;
-	nh.getParam("/get_sound_data_for2i2/pcm_loops_", tmp);
+	nh.getParam("pcm_loops_", tmp);
 	pcm_loops_ = tmp;
-	nh.getParam("/get_sound_data_for2i2/pcm_sampleRate_", tmp);
+	nh.getParam("pcm_sampleRate_", tmp);
 	pcm_sampleRate_ = tmp;
-	nh.getParam("/get_sound_data_for2i2/pcm_using_channels_", tmp);
+	nh.getParam("pcm_using_channels_", tmp);
     pcm_using_channels_ = tmp;
 
     // Setup the publisher
@@ -86,7 +86,7 @@ pcm_bits_(sizeof(int32_t) * 8)
     // Initialize message data
     hydro_msg.data_type = "int32_t";
 	hydro_msg.fs = pcm_sampleRate_;
-	hydro_msg.bits = 16;
+	hydro_msg.bits = 32;
     hydro_msg.data_ch1.clear();
     hydro_msg.data_ch2.clear();
     hydro_msg.data_ch3.clear();
