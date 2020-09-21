@@ -49,6 +49,7 @@ class hydrophone_data_node
         int pcm_bits_;
         int pcm_send_size_;
         char *pcm_period_buffer_;
+		double msg_length_;
 };
 
 /*                                    */
@@ -79,6 +80,9 @@ hydrophone_data_node::hydrophone_data_node():
 	pcm_sampleRate_ = tmp;
 	nh.getParam("pcm_using_channels_", tmp);
     pcm_using_channels_ = tmp;
+	nh.getParam("msg_length_", tmp);
+	msg_length_ = tmp;
+	ROS_INFO("set msg length: %f", msg_length_);
 
     // Setup the publisher
     pub_sound = nh.advertise<ntu_msgs::HydrophoneData>("hydrophone_data", 10);
@@ -199,7 +203,7 @@ void hydrophone_data_node::run(void)
     while (ros::ok())
     {
         Capture();
-        if(hydro_msg.data_ch1.size() >= pcm_sampleRate_ / 2)    // send data every 0.5 second
+        if(hydro_msg.data_ch1.size() >= pcm_sampleRate_ * msg_length_)    // send data every 0.5 second
         {
             hydro_msg.length = hydro_msg.data_ch1.size();
             ROS_INFO("Published %d samples data.", (int)hydro_msg.data_ch1.size());
