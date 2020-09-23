@@ -2,6 +2,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import numpy as np
+import time
 # import ros library
 import rospy
 from ntu_msgs.msg import HydrophoneData
@@ -36,17 +37,20 @@ class plot_hydrophone_data_node:
             self.data_frame_ch1 = self.data_frame_ch1[-number:]
         #    self.data_frame_ch2 = self.data_frame_ch2[-number:]
     def animate(self, i):
+        time_start = time.time()
         plt.cla()
         
         data = self.data_frame_ch1
         count = self.count
-        time = np.arange(len(data))/self.fs + count*self.data_length/self.fs
+        t = np.arange(len(data))/self.fs + count*self.data_length/self.fs
         
-        self.ax.plot(time, data)
+        self.ax.plot(t, data)
         self.ax.set_xlabel("Time(s)")
         self.ax.set_ylabel("Voltage(volt)")
         self.ax.set_title("Streaming plot for Hydrophone data")
         self.ax.grid(True)
+        time_end = time.time()
+        print("time consuming: ", time_end-time_start, "sec")
 
 
 
