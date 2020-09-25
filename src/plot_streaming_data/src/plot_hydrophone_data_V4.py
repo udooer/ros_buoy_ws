@@ -20,7 +20,6 @@ class plot_hydrophone_data_node:
 
         self.plot_length = 1 # frame length(sec) in the plot
         self.count = 0 # set the adding time  
-        self.time = np.array([])
         rospy.Subscriber("/get_sound_data_for2i2/hydrophone_data", HydrophoneData, self.callback)
 
     # after we get the data from ros master put it inside our container 

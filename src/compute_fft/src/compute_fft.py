@@ -33,6 +33,7 @@ class compute_fft_node:
         data_ch1 = np.array(data.data_ch1)
         data_ch2 = np.array(data.data_ch2)
         self.fs = data.fs
+        self.msg.fs = self.fs
         self.data_frame_ch1 = np.concatenate((self.data_frame_ch1, data_ch1))
         self.data_frame_ch2 = np.concatenate((self.data_frame_ch2, data_ch2))
         while(len(self.data_frame_ch1)>self.window_length):
