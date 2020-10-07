@@ -89,9 +89,7 @@ hydrophone_data_node::hydrophone_data_node():
     pub_sound = nh.advertise<ntu_msgs::HydrophoneData>("hydrophone_data", 10);
 
     // Initialize message data
-    hydro_msg.data_type = "int32_t";
 	hydro_msg.fs = pcm_sampleRate_;
-	hydro_msg.bits = 32;
     hydro_msg.data_ch1.clear();
     hydro_msg.data_ch2.clear();
     // hydro_msg.data_ch3.clear();
