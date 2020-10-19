@@ -1,8 +1,0 @@
-prefix=/home/yong/ros_buoy_ws/devel
-
-Name: ntu_msgs
-Description: Description of ntu_msgs
-Version: 0.0.0
-Cflags: -I/home/yong/ros_buoy_ws/devel/include
-Libs: -L${prefix}/lib 
-Requires: 

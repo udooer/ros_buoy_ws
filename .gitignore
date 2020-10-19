@@ -1,0 +1,6 @@
+src/sensor/nmea_navsat_driver/.git
+src/sensor/nmea_navsat_driver/.gitignore
+build/
+src/sensor/nmea_navsat_driver
+src/sensor/gps_umd
+devel/

@@ -204,8 +204,8 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_executable(${PROJECT_NAME} src/get_sound_data.cpp)
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
+#add_executable(${PROJECT_NAME} src/get_sound_data.cpp)
+#target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 add_executable(get_sound_data_for2i2 src/get_sound_data_for2i2.cpp)
 target_link_libraries(get_sound_data_for2i2 ${catkin_LIBRARIES})
 
@@ -215,6 +215,6 @@ find_package(
 
 if (ALSA_FOUND)                                                
     include_directories(${ALSA_INCLUDE_DIRS})      
-    target_link_libraries (${PROJECT_NAME} ${ALSA_LIBRARIES})      
+#    target_link_libraries (get_sound_data ${ALSA_LIBRARIES})      
     target_link_libraries (get_sound_data_for2i2 ${ALSA_LIBRARIES})      
 endif(ALSA_FOUND)

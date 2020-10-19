@@ -1,2 +1,0 @@
-get_sound_data:ntu_msgs
--DCATKIN_DEVEL_PREFIX=/home/yong/ros_buoy_ws/devel -DCMAKE_INSTALL_PREFIX=/home/yong/ros_buoy_ws/install -G Unix Makefiles
