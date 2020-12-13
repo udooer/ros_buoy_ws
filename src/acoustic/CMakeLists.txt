@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  ntu_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -204,3 +205,5 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+add_executable(save_data src/save_data.cpp)
+target_link_libraries(save_data ${catkin_LIBRARIES})
