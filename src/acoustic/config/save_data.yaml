@@ -1,0 +1,13 @@
+## config file for /acoustic/save_data node 
+## written by Shane
+## 2020_12_14
+
+FILE_PATH_: "/home/yong/data/"
+FILE_LENGTH_: 1             # wave file length (minute)
+
+## setting for wave file(for pam_buoy_recording system)
+## DO NOT CHANGE THE FOLLOWING PARAMETERS
+## unless the recording system change 
+NUM_CHANNELS_: 2
+SAMPLING_RATE_: 96000       # SAMPLES/sec
+RESOLUTION_: 32             # bit

@@ -205,5 +205,5 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-add_executable(save_data src/save_data.cpp)
+add_executable(save_data src/save_data/save_data.cpp)
 target_link_libraries(save_data ${catkin_LIBRARIES})
