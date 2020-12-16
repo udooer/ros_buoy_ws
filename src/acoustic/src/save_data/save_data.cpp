@@ -1,4 +1,8 @@
-/*program for saving the hydrophone data as wave file in sd card
+/*program for saving the ROS msg hydrophoneData as wave file in sd card
+  File_path : as config file
+  File_length : as config file
+  Num_channels : 2
+  Resolutions : 32
   written by Shane 
   2020_12_14
  */
@@ -10,6 +14,7 @@
 #include<cmath>
 //for ROS
 #include<ros/ros.h>
+#include<ros/console.h>
 #include"ntu_msgs/HydrophoneData.h"
 
 
@@ -32,7 +37,21 @@ struct header{
     int subchunk2_size;    
 }header_file;
 
-// define a funtion getting the current UTC time for the wave file name 
+// Define a function for setting wav headerfile 
+void setHeaderFile(unsigned int sample_count, int fs){
+    short int num_channels = 2; // based on your msg type
+    int resolution = 32;        // 32 bits
+
+    header_file.chunk_size = sample_count*num_channels*resolution/8+44;
+    header_file.num_channels = (short int)num_channels;
+    header_file.sample_rate = fs;
+    header_file.byte_rate = fs*resolution/8*num_channels;
+    header_file.block_align = (short int)(resolution/8*num_channels);
+    header_file.bits_per_sample = (short int)(resolution);
+    header_file.subchunk2_size = sample_count*num_channels*resolution/8;
+}
+
+// Define a funtion getting the current UTC time for the wave file name 
 string getTime(){
     time_t now = time(0);
     tm *ts = localtime(&now);
@@ -59,17 +78,14 @@ public:
 private:
     void push(const ntu_msgs::HydrophoneData &);
     
-    // config file 
+    // config file parameters
     string  FILE_PATH_;
     int FILE_LENGTH_;
-    int NUM_CHANNELS_;
-    int SAMPLING_RATE_;
-    int RESOLUTION_;
 
+    // member variable
     unsigned int m_count;   // count the data length
-    unsigned int m_MAX;
-    FILE* fp;               // file pointer 
-
+    int m_fs;               // sampling rate
+    FILE* m_fp;               // file pointer 
 };
 
 /*                                   */
@@ -81,41 +97,26 @@ nh_private("~"), m_count(0)
     // Get setting from yaml file
     nh_private.getParam("FILE_PATH_", FILE_PATH_);
     nh_private.getParam("FILE_LENGTH_", FILE_LENGTH_);
-    nh_private.getParam("NUM_CHANNELS_", NUM_CHANNELS_);
-    nh_private.getParam("SAMPLING_RATE_", SAMPLING_RATE_);
-    nh_private.getParam("RESOLUTION_", RESOLUTION_);
-    ROS_INFO_STREAM("setting success\n");
-    ROS_INFO_STREAM("file path:\t\t" + FILE_PATH_);
-    ROS_INFO_STREAM("file length(min):\t"<<FILE_LENGTH_);
-    ROS_INFO_STREAM("NUM_CHANNELS_:\t\t"<<NUM_CHANNELS_);
-    ROS_INFO_STREAM("SAMPLING_RATE_:\t\t"<<SAMPLING_RATE_);
-    ROS_INFO_STREAM("RESOLUTION_:\t\t"<<RESOLUTION_);
 
-    m_MAX = FILE_LENGTH_*60*SAMPLING_RATE_;
-    // Set wave header file
-    header_file.chunk_size = FILE_LENGTH_*60*SAMPLING_RATE_*NUM_CHANNELS_*RESOLUTION_/8+44;
-    header_file.num_channels = (short int)NUM_CHANNELS_;
-    header_file.sample_rate = SAMPLING_RATE_;
-    header_file.byte_rate = SAMPLING_RATE_*RESOLUTION_/8*NUM_CHANNELS_;
-    header_file.block_align = (short int)(RESOLUTION_/8*NUM_CHANNELS_);
-    header_file.bits_per_sample = (short int)(RESOLUTION_);
-    header_file.subchunk2_size = FILE_LENGTH_*60*SAMPLING_RATE_*NUM_CHANNELS_*RESOLUTION_/8;
+    ROS_INFO("setting success\n");
+    ROS_INFO("file path:\t\t%s", FILE_PATH_.c_str());
+    ROS_INFO("file length(min):\t%d", FILE_LENGTH_);
 
     // Set ROS subscriber
     sub = nh_public.subscribe("/get_sound_data_for2i2/hydrophone_data", 1000, &save_data_node::push, this);
 }
+
 /*                                   */
 /************* Destructor ************/
 /*                                   */
 save_data_node::~save_data_node(){
-    int data=0;
-    for(int i=m_count;i<m_MAX;i++){
-        fwrite(&data, 4, 1, fp);
-        fwrite(&data, 4, 1, fp);
-    }
-    fclose(fp);
-    ROS_INFO("Close the file.");
+    fseek(m_fp, 0, SEEK_SET);
+    setHeaderFile(m_count, m_fs);
+    fwrite(&header_file, 44, 1, m_fp);
+    fclose(m_fp);
+    ROS_INFO("CLOSING FILE!!!");
 }
+
 // Define the push callback function 
 void save_data_node::push(const ntu_msgs::HydrophoneData &msg){
     clock_t begin = clock();
@@ -123,33 +124,37 @@ void save_data_node::push(const ntu_msgs::HydrophoneData &msg){
         string filename = getTime()+".wav";
         ROS_INFO_STREAM("OPENNING NEW FILE: "<<filename<<" !!!");
         filename = FILE_PATH_ + filename;
-        fp = fopen(filename.c_str(), "wb");
-        fwrite(&header_file, 44, 1, fp);
+        m_fp = fopen(filename.c_str(), "wb");
+        fseek(m_fp, 44, SEEK_SET);
     }
     vector<double> ch1 = msg.data_ch1;
     vector<double> ch2 = msg.data_ch2;
     int length = msg.length;
-    int fs = msg.fs;
+    m_fs = msg.fs;
+    unsigned int MAX = FILE_LENGTH_*60*m_fs;
     int data;
     for(int i=0;i<length;i++){
         data = (int)(ch1.at(i)*pow(2, 31));
-        fwrite(&data, 4, 1, fp);
+        fwrite(&data, 4, 1, m_fp);
         data = (int)(ch2.at(i)*pow(2, 31));
-        fwrite(&data, 4, 1, fp);
+        fwrite(&data, 4, 1, m_fp);
     }
     m_count += length;
-    if(m_count>=m_MAX){
+    if(m_count>=MAX){
+        fseek(m_fp, 0, SEEK_SET);
+        setHeaderFile(m_count, m_fs);
+        fwrite(&header_file, 44, 1, m_fp);
         m_count = 0;
-        fclose(fp);
+        fclose(m_fp);
         ROS_INFO("CLOSING FILE !!!");
     }
     clock_t end = clock();
     double elapsed_secs = double(end-begin)/CLOCKS_PER_SEC;
-    ROS_INFO_STREAM("length:"<<length<<",sampling_rate:"<<fs<<",time:"<<elapsed_secs);
+    ROS_INFO_STREAM("Saving "<<(double)length/m_fs<<" sec data takes "<<elapsed_secs<<" sec");
 }
 
 int main(int argc, char** argv){
-    ros::init(argc, argv, "save_data_note");
+    ros::init(argc, argv, "save_data_node");
     save_data_node save_obj;
     ros::spin();
     return 0;
