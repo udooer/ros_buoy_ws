@@ -56,6 +56,7 @@ class compute_fft_node:
     # callback function when we get the data 
     # from get_sound_data_for2i2/hydrophone_data topic
     def callback(self, data):
+        start = time.time()
         self.data_ch1 = np.concatenate((self.data_ch1, data.data_ch1))
         self.data_ch2 = np.concatenate((self.data_ch2, data.data_ch2))
         self.length = data.length
@@ -64,7 +65,8 @@ class compute_fft_node:
         self.msg.fs = self.fs
         self.msg.delta_f = self.fs/self.WINDOW_LENGTH_
         self.msg.delta_t = self.WINDOW_LENGTH_*(1-self.OVERLAP_)/self.fs
-        while(len(self.data_ch1)>self.WINDOW_LENGTH_):
+        count = 0
+        while(len(self.data_ch1)>=self.WINDOW_LENGTH_):
             windowed_ch1 = self.data_ch1[:self.WINDOW_LENGTH_]
             windowed_ch2 = self.data_ch2[:self.WINDOW_LENGTH_]
             self.data_ch1 = self.data_ch1[self.STEP_:]
@@ -72,6 +74,10 @@ class compute_fft_node:
             self.msg.fft_ch1 = self.windowedFFT(windowed_ch1)
             self.msg.fft_ch2 = self.windowedFFT(windowed_ch2)
             self.pub.publish(self.msg)
+            count += 1
+        end = time.time()
+        sec = count*self.STEP_/self.fs
+        rospy.loginfo("Computing fft of " + str(round(sec, 6)) + " sec data takes " + str(round(end-start, 6)) + " sec")
 def main():
     rospy.init_node('compute_fft_node', anonymous=True)
     rosnode = compute_fft_node()
