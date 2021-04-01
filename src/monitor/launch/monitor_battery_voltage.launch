@@ -1,0 +1,5 @@
+<launch>
+	<node name="monitor_battery_voltage_node" pkg="monitor" type="monitor_battery_voltage" clear_params="true" output="screen">
+		<rosparam command="load" file="$(find monitor)/config/monitor_battery_voltage.yaml" />		
+	</node>
+</launch>

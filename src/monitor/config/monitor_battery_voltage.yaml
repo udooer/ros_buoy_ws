@@ -1,0 +1,5 @@
+## Description:	config file for /monitor/monitor_battery_voltage_node
+## Author: 		Shane
+## Data: 2021_04_01
+FILE_PATH_    : "/home/yong/data/"
+TIME_INTERVAL_ : 4
