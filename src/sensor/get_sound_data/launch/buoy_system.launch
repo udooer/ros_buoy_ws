@@ -1,0 +1,13 @@
+<launch>
+    <include file="$(find get_sound_data)/launch/get_sound_data_for2i2.launch" />
+    <include file="$(find acoustic)/launch/save_data.launch" />
+    <node pkg="rosserial_python" type="serial_node.py" name="serial_node">
+        <param name="port" value="/dev/ttyACM0" />
+        <param name="baud" value="57600" />
+    </node>
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+        <param name="address" value="192.168.2.101" />
+        <param name="port" value="9080">
+    </include>
+    <include file="$(find monitor)/launch/monitor_battery_voltage.launch" />
+</launch>

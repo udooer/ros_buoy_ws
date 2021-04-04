@@ -27,6 +27,9 @@ private:
 	FILE *m_fp_comm;
 	FILE *m_fp_sys; 
 
+    std::string m_filename_comm;
+    std::string m_filename_sys;
+
 	std::string m_file_path;
 	int m_time_interval;
 };
@@ -42,10 +45,8 @@ m_n_private("~")
 	
 	m_sub_comm = m_n_public.subscribe("/communication_battery", 1, &monitor_battery_voltage_node::save_comm, this);
 	m_sub_sys = m_n_public.subscribe("/system_battery", 1, &monitor_battery_voltage_node::save_sys, this);
-	std::string filename = m_file_path + "communication_bat.csv";
-	m_fp_comm = fopen(filename.c_str(), "w");
-	filename = m_file_path + "system_bat.csv";
-	m_fp_sys = fopen(filename.c_str(), "w");
+	m_filename_comm = m_file_path + "communication_bat.csv";
+	m_filename_sys = m_file_path + "system_bat.csv";
 
 	ROS_INFO("setting finished.\n");
 	ROS_INFO("file path:\t%s", m_file_path.c_str());
@@ -64,7 +65,9 @@ void monitor_battery_voltage_node::save_comm(const std_msgs::Float64 &msg){
 	ss<<msg.data<<",";
 	ss>>s;
 	
+	m_fp_comm = fopen(m_filename_comm.c_str(), "a");
 	fwrite(s.c_str(), 1, s.length(), m_fp_comm);
+    fclose(m_fp_comm);
 	while(double(clock()-now)/CLOCKS_PER_SEC < (m_time_interval/2));
 
 	ROS_INFO("get communication battery data:\t%s", s.c_str());
@@ -82,7 +85,9 @@ void monitor_battery_voltage_node::save_sys(const std_msgs::Float64 &msg){
 	ss<<msg.data<<",";
 	ss>>s;
 	
+	m_fp_sys = fopen(m_filename_sys.c_str(), "a");
 	fwrite(s.c_str(), 1, s.length(), m_fp_sys);
+    fclose(m_fp_sys);
 	while(double(clock()-now)/CLOCKS_PER_SEC < (m_time_interval/2));
 
 	ROS_INFO("get system battery data:\t%s", s.c_str());
