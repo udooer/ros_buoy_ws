@@ -7,7 +7,7 @@ import time
 
 # import ROS library
 import rospy
-from ntu_msgs.msg import HydrophoneData, HydrophoneFFTData
+from ntu_msgs.msg import HydrophoneData, HydrophoneFFTDataWithClickRemoval
 
 class plot_streaming_data_node:
     def __init__(self):
@@ -42,7 +42,7 @@ class plot_streaming_data_node:
         self.count_f = 0
 
         rospy.Subscriber("/get_sound_data_for2i2/hydrophone_data", HydrophoneData, self.push_hydrophone_data)
-        rospy.Subscriber("/compute_fft/fft_data", HydrophoneFFTData, self.push_fft_data)
+        rospy.Subscriber("/compute_fft/two_mode_fft_data", HydrophoneFFTDataWithClickRemoval, self.push_fft_data)
     # define the function to get the private node parameters setting 
     # for this node from plot_streaming_data.yaml file
     def getParameters(self):
@@ -115,17 +115,17 @@ class plot_streaming_data_node:
         
         # time_stamp_4 = time.time()
 
-        self.ax[1][0].imshow(np.array(fft_ch1).T, origin="lower", extent=[t3_max-self.PLOT_LENGTH_, t3_max, 0, f_max])
+        self.ax[1][0].imshow(np.array(fft_ch1).T, cmap="jet", origin="lower", extent=[t3_max-self.PLOT_LENGTH_, t3_max, 0, f_max/1000])
         self.ax[1][0].axis('auto')
         self.ax[1][0].set_xlabel("Time(s)")
-        self.ax[1][0].set_ylabel("Frequency(Hz)")
-        self.ax[1][0].set_ylim([0, 20000])
+        self.ax[1][0].set_ylabel("Frequency(kHz)")
+        self.ax[1][0].set_ylim([2, 12])
 
-        self.ax[1][1].imshow(np.array(fft_ch2).T, origin="lower", extent=[t4_max-self.PLOT_LENGTH_, t4_max, 0, f_max])
+        self.ax[1][1].imshow(np.array(fft_ch2).T, cmap="jet", origin="lower", extent=[t4_max-self.PLOT_LENGTH_, t4_max, 0, f_max/1000])
         self.ax[1][1].axis('auto')
         self.ax[1][1].set_xlabel("Time(s)")
-        self.ax[1][1].set_ylabel("Frequency(Hz)")
-        self.ax[1][1].set_ylim([0, 20000])
+        self.ax[1][1].set_ylabel("Frequency(kHz)")
+        self.ax[1][1].set_ylim([2, 12])
         self.ax[1][1].yaxis.set_label_position("right")
         self.ax[1][1].yaxis.set_ticks_position("right")
         # time_stamp_5 = time.time()

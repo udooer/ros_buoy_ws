@@ -1,0 +1,5 @@
+<launch>
+	<node name="plot_detection_result_node" pkg="acoustic" type="plot_detection_result.py" output="screen" clear_params="true">
+		<rosparam command="load" file="$(find acoustic)/config/plot_detection_result.yaml"/>
+	</node>
+</launch>

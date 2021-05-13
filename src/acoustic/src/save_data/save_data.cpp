@@ -127,8 +127,8 @@ void save_data_node::push(const ntu_msgs::HydrophoneData &msg){
         m_fp = fopen(filename.c_str(), "wb");
         fseek(m_fp, 44, SEEK_SET);
     }
-    vector<double> ch1 = msg.data_ch1;
-    vector<double> ch2 = msg.data_ch2;
+    vector<float> ch1 = msg.data_ch1;
+    vector<float> ch2 = msg.data_ch2;
     int length = msg.length;
     m_fs = msg.fs;
     unsigned int MAX = FILE_LENGTH_*60*m_fs;

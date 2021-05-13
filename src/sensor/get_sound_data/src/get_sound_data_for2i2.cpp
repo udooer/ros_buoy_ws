@@ -183,7 +183,7 @@ void hydrophone_data_node::Capture(void)
     for(int i = 0; i < pcm_period_size_ - pcm_available_channels_ * 4 + 1; i = i + pcm_available_channels_ * 4){
         int sum1 = (unsigned char)pcm_period_buffer_[i]+256*(unsigned char)pcm_period_buffer_[i+1]+256*256*(unsigned char)pcm_period_buffer_[i+2]+256*256*256*pcm_period_buffer_[i+3];
         int sum2 = (unsigned char)pcm_period_buffer_[i+4]+256*(unsigned char)pcm_period_buffer_[i+5]+256*256*(unsigned char)pcm_period_buffer_[i+6]+256*256*256*pcm_period_buffer_[i+7];
-        double data;
+        float data;
         data = sum1/pow(2,31);
         hydro_msg.data_ch1.push_back(data); //channel 1 data
         data = sum2/pow(2,31);

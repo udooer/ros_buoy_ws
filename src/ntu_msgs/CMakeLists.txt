@@ -53,6 +53,8 @@ add_message_files(
    FILES
    HydrophoneData.msg
    HydrophoneFFTData.msg
+   HydrophoneFFTDataWithClickRemoval.msg
+   DetectionImage.msg
  )
 
 ## Generate services in the 'srv' folder
