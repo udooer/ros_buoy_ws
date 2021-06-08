@@ -207,3 +207,7 @@ include_directories(
 # catkin_add_nosetests(test)
 add_executable(save_data src/save_data/save_data.cpp)
 target_link_libraries(save_data ${catkin_LIBRARIES})
+
+add_executable(save_data_v2 src/save_data/save_data_v2.cpp)
+target_link_libraries(save_data_v2 ${catkin_LIBRARIES})
+

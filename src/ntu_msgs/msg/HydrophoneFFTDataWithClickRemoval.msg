@@ -1,6 +1,4 @@
 Header header
-float32[] fft_ch1 				# half length of magnitude fft from hydrophone ch1
-float32[] fft_ch2 				# half length of magnitude fft from hydrophone ch2
 float32[] fft_ch1_click_removal # half length of magnitude fft from hydrophone ch1
 float32[] fft_ch2_click_removal # half length of magnitude fft from hydrophone ch2
 float32 delta_f

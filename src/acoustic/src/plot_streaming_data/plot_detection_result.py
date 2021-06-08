@@ -9,7 +9,7 @@ import math
 
 # import ROS library
 import rospy
-from ntu_msgs.msg import HydrophoneFFTDataWithClickRemoval, DetectionImage
+from ntu_msgs.msg import HydrophoneFFTData, DetectionImage
 
 class plot_detection_result_node:
     def __init__(self):
@@ -40,7 +40,7 @@ class plot_detection_result_node:
         self.N = 0
 
         rospy.Subscriber("/detect_whistle/detection_image", DetectionImage, self.push_detection_data)
-        rospy.Subscriber("/compute_fft/two_mode_fft_data", HydrophoneFFTDataWithClickRemoval, self.push_fft_data)
+        rospy.Subscriber("/compute_fft/fft_data", HydrophoneFFTData, self.push_fft_data)
     # define the function to get the private node parameters setting 
     # for this node from plot_streaming_data.yaml file
     def getParameters(self):
@@ -95,7 +95,10 @@ class plot_detection_result_node:
         fft_ch2 = copy.copy(self.fft_ch2)
         col_ch1 = np.copy(self.col_ch1)
         col_ch2 = np.copy(self.col_ch2)
-
+        print("fft ch1 length: {}".format(len(fft_ch1)))
+        print("fft ch2 length: {}".format(len(fft_ch2)))
+        print("col ch1 length: {}".format(len(col_ch1)))
+        print("col ch2 length: {}".format(len(col_ch2)))
         fft_length = len(fft_ch1)
         col_length = len(col_ch1)
         if(col_length>self.N and fft_length>self.N):
@@ -136,6 +139,7 @@ class plot_detection_result_node:
         print("col ch1 length: {}".format(len(col_ch1)))
         print("col ch2 length: {}".format(len(col_ch2)))
         print("count t : {}".format(self.count_t))
+        print("\n\n\n")
 
         # time_stamp_3 = time.time()
         self.ax[0][0].imshow(np.array(fft_ch1).T, cmap="jet", origin="lower", extent=[self.count_t*self.dt, self.count_t*self.dt+self.PLOT_LENGTH_, 0, f[self.M_fft-1]])

@@ -5,19 +5,16 @@ DETECTOR_FRAME_ : 1
 
 # Band Pass
 START_FREQ_ : 3000
-END_FREQ_ : 10000
+END_FREQ_ : 12000
 FFT_NUMBER_ : 1024
 FS_ : 96000
 
 # Whistle Filter
 FREQ_WIDTH_ : 300
-DEFINED_SNR_ : 20
+DEFINED_SNR_ : 12
 TIME_DURATION_ : 0.02
 
 # DBScan Clustering
 EPS_ : 20
 MIN_SAMPLES_ : 5
 
-# Figure Length
-PLOT_LENGTH_ : 10
-FPS_ : 1

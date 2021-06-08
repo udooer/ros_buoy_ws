@@ -2,5 +2,5 @@
 ## written by Shane
 ## 2020_12_14
 
-FILE_PATH_: "/home/ual/SD/"
-FILE_LENGTH_: 60                   # wave file length (minute)
+FILE_PATH_: "/home/yong/data/hydrophone/"
+FILE_LENGTH_: 5                   # wave file length (minute)

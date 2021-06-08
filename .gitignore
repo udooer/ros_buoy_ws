@@ -1,3 +1,4 @@
 build/
 devel/
 src/sensor/get_sound_data/bagfiles
+src/rosserial/

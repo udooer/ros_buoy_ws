@@ -26,7 +26,7 @@ class compute_fft_node:
 
         # define subscriber and publisher 
         rospy.Subscriber("/get_sound_data_for2i2/hydrophone_data", HydrophoneData, self.callback)
-        self.pub = rospy.Publisher("/compute_fft/two_mode_fft_data", HydrophoneFFTDataWithClickRemoval, queue_size=200)
+        self.pub = rospy.Publisher("/compute_fft/fft_data_with_click_removal", HydrophoneFFTDataWithClickRemoval, queue_size=200)
     # define the function to get the private node parameters setting 
     # for this node from compute_fft.yaml file
     def getParameters(self):
@@ -85,8 +85,6 @@ class compute_fft_node:
             windowed_ch2 = self.data_ch2[:self.WINDOW_LENGTH_]
             self.data_ch1 = self.data_ch1[self.STEP_:]
             self.data_ch2 = self.data_ch2[self.STEP_:]
-            self.msg.fft_ch1 = self.windowedFFT(windowed_ch1)
-            self.msg.fft_ch2 = self.windowedFFT(windowed_ch2)
             self.msg.fft_ch1_click_removal = self.windowedFFT(self.removeClick(windowed_ch1))
             self.msg.fft_ch2_click_removal = self.windowedFFT(self.removeClick(windowed_ch2))
             self.pub.publish(self.msg)

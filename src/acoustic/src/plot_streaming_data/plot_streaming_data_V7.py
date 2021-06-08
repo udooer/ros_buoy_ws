@@ -7,7 +7,7 @@ import time
 
 # import ROS library
 import rospy
-from ntu_msgs.msg import HydrophoneData, HydrophoneFFTDataWithClickRemoval
+from ntu_msgs.msg import HydrophoneData, HydrophoneFFTData
 
 class plot_streaming_data_node:
     def __init__(self):
@@ -42,7 +42,7 @@ class plot_streaming_data_node:
         self.count_f = 0
 
         rospy.Subscriber("/get_sound_data_for2i2/hydrophone_data", HydrophoneData, self.push_hydrophone_data)
-        rospy.Subscriber("/compute_fft/two_mode_fft_data", HydrophoneFFTDataWithClickRemoval, self.push_fft_data)
+        rospy.Subscriber("/compute_fft/fft_data", HydrophoneFFTData, self.push_fft_data)
     # define the function to get the private node parameters setting 
     # for this node from plot_streaming_data.yaml file
     def getParameters(self):

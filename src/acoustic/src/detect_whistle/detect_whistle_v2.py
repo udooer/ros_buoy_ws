@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # basic package you definitly know
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 import math
 import pandas as pd
 import os.path
@@ -36,7 +34,7 @@ class detect_whistle_node:
 
         self.msg = DetectionImage()
         # define subscriber and publisher
-        rospy.Subscriber("/compute_fft/two_mode_fft_data", HydrophoneFFTDataWithClickRemoval, self.pushFFTData)
+        rospy.Subscriber("/compute_fft/fft_data_with_click_removal", HydrophoneFFTDataWithClickRemoval, self.pushFFTData)
         self.pub = rospy.Publisher('/detect_whistle/detection_image', DetectionImage, queue_size=1)
     def getParameters(self):
         self.DETECTOR_FRAME_ = rospy.get_param("~DETECTOR_FRAME_")
@@ -56,11 +54,6 @@ class detect_whistle_node:
         # DBScan Clustering
         self.EPS_ = rospy.get_param("~EPS_")
         self.MIN_SAMPLES_ = rospy.get_param("~MIN_SAMPLES_")
-        # Figure Length
-        self.PLOT_LENGTH_ = rospy.get_param("~PLOT_LENGTH_")
-        self.FPS_ = rospy.get_param("~FPS_")
-        
-        self.INTERVAL_ = int(1000/self.FPS_) #(ms)
     
     def whistleFeatureFilter(self, median_blur):
         width_size = math.ceil(self.FREQ_WIDTH_/2/self.delta_f)
@@ -74,7 +67,8 @@ class detect_whistle_node:
             SNR.append(snr)
         SNR = np.array(SNR)
 
-        SNR_filter = SNR>self.DEFINED_SNR_
+        SNR_median_blur = cv2.medianBlur(SNR.astype(np.float32),3)
+        SNR_filter = SNR_median_blur>self.DEFINED_SNR_
         ## Long time duration
         col_size = math.ceil(self.TIME_DURATION_/self.delta_t)
 
