@@ -1,0 +1,5 @@
+<launch>
+	<node name="detect_whistle_node" pkg="acoustic" type="detect_whistle_v2.py" output="screen" clear_params="true">
+		<rosparam command="load" file="$(find acoustic)/config/detect_whistle.yaml"/>
+	</node>
+</launch>

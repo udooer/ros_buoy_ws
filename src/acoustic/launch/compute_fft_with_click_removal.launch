@@ -1,0 +1,5 @@
+<launch>
+	<node name="compute_fft_with_click_removal_node" pkg="acoustic" type="compute_fft_with_click_removal.py" output="screen" clear_params="true">
+		<rosparam command="load" file="$(find acoustic)/config/compute_fft.yaml"/>
+	</node>
+</launch>

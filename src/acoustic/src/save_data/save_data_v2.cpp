@@ -12,6 +12,7 @@
 #include<vector>
 #include<ctime>
 #include<cmath>
+#include<csignal>
 //for ROS
 #include<ros/ros.h>
 #include<ros/console.h>
@@ -19,6 +20,10 @@
 
 
 using namespace std;
+
+FILE* global_fp;
+int global_count; 
+int global_fs;
 
 // define standard wave file struct  
 struct header{
@@ -69,12 +74,12 @@ class save_data_node
 public:
     save_data_node();
     ~save_data_node();
+    void callback(int);
 
     //ROS parameter
     ros::NodeHandle nh_private;
     ros::NodeHandle nh_public;
     ros::Subscriber sub;
-
 private:
     void push(const ntu_msgs::HydrophoneData &);
     
@@ -125,12 +130,14 @@ void save_data_node::push(const ntu_msgs::HydrophoneData &msg){
         ROS_INFO_STREAM("OPENNING NEW FILE: "<<filename<<" !!!");
         filename = FILE_PATH_ + filename;
         m_fp = fopen(filename.c_str(), "wb");
+        global_fp = m_fp;
         fseek(m_fp, 44, SEEK_SET);
     }
     vector<float> ch1 = msg.data_ch1;
     vector<float> ch2 = msg.data_ch2;
     int length = msg.length;
     m_fs = msg.fs;
+    global_fs = m_fs;
     unsigned int MAX = FILE_LENGTH_*60*m_fs;
     int data;
     for(int i=0;i<length;i++){
@@ -140,11 +147,13 @@ void save_data_node::push(const ntu_msgs::HydrophoneData &msg){
         fwrite(&data, 4, 1, m_fp);
     }
     m_count += length;
+    global_count = m_count;
     if(m_count>=MAX){
         fseek(m_fp, 0, SEEK_SET);
         setHeaderFile(m_count, m_fs);
         fwrite(&header_file, 44, 1, m_fp);
         m_count = 0;
+        global_count = m_count;
         fclose(m_fp);
         ROS_INFO("CLOSING FILE !!!");
     }
@@ -153,9 +162,20 @@ void save_data_node::push(const ntu_msgs::HydrophoneData &msg){
     ROS_INFO_STREAM("Saving "<<(double)length/m_fs<<" sec data takes "<<elapsed_secs<<" sec");
 }
 
+void callback(int signum){
+    cout<<"Iterrupt sinal "<<signum<<" received."<<endl;
+    fseek(global_fp, 0, SEEK_SET);
+    setHeaderFile(global_count, global_fs);
+    fwrite(&header_file, 44, 1, global_fp);
+    fclose(global_fp);
+    ROS_INFO("CLOSING FILE !!!");
+    exit(signum);
+}
+
 int main(int argc, char** argv){
     ros::init(argc, argv, "save_data_node");
     save_data_node save_obj;
+    signal(SIGINT, callback);
     ros::spin();
     return 0;
 }

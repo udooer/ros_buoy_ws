@@ -1,0 +1,5 @@
+## config file for /acoustic/plot_detction_result node ##
+## written by Shane
+
+PLOT_LENGTH_: 5  #(sec)
+## FPS_: 0.5 #(Hz) # default value one Frame Per Second
