@@ -92,7 +92,7 @@ class compute_fft_node:
         end = time.time()
         sec = count*self.STEP_/self.fs
         # rospy.loginfo("Computing fft of " + str(round(sec, 6)) + " sec data takes " + str(round(end-start, 6)) + " sec")
-        print("one callback function deals with {} seconds of data and takes {} seconds".format(sec,end-start))
+        print("Computing delta_t {} of fft data takes {} seconds.".format(str(round(sec, 6)), str(round(end-start,6))))
 def main():
     rospy.init_node('compute_fft_two_mode_node', anonymous=True)
     rosnode = compute_fft_node()
