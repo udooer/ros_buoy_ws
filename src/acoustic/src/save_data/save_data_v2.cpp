@@ -63,8 +63,8 @@ string getTime(){
     stringstream ss;
     string date;
     ss<<1900+ts->tm_year<<"-"<<1+ts->tm_mon<<\
-    "-"<<ts->tm_mday<<"_"<<ts->tm_hour-8<<":"<<\
-    ts->tm_min<<":"<<ts->tm_sec;
+    "-"<<ts->tm_mday<<"_"<<ts->tm_hour-8<<"-"<<\
+    ts->tm_min<<"-"<<ts->tm_sec;
     ss>>date;
     return date;
 }
