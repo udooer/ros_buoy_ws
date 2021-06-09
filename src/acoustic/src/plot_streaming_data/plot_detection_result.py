@@ -171,8 +171,7 @@ class plot_detection_result_node:
         self.ax[1][1].set_ylim([2, 12])
         self.ax[1][1].yaxis.set_label_position("right")
         self.ax[1][1].yaxis.set_ticks_position("right")
-        print("Using 1 FPS for animation takes {} seconds.".format(time.time()-time_stamp_1))
-
+        print("Ploting detection result for FPS 0.5 takes {} seconds.".format(str(round(time.time()-time_stamp_1,6))))
 def main():
     rospy.init_node("plot_streaming_data_node", anonymous=True)
     plot_node = plot_detection_result_node()
