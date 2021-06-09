@@ -206,7 +206,7 @@ class plot_streaming_data_node:
         elif(case == 2):
             self.animate_2()
         time_end = time.time()
-        print("total consuming: ", time_end-time_start, "sec")
+        print("Ploting streaming data for FPS {} takes {} seconds.".format(self.FPS_, time_end-time_start))
 
 
 

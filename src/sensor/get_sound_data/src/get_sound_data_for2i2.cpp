@@ -208,7 +208,7 @@ void hydrophone_data_node::run(void)
         if(hydro_msg.data_ch1.size() >= pcm_sampleRate_ * msg_length_)    // send data every 0.5 second
         {
             hydro_msg.length = hydro_msg.data_ch1.size();
-            ROS_INFO("Published %d samples data.", (int)hydro_msg.data_ch1.size());
+            ROS_INFO("Publishing %d samples of hydrophone data .", (int)hydro_msg.data_ch1.size());
 
             pub_sound.publish(hydro_msg);
 
