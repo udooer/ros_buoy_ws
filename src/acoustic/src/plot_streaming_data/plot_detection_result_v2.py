@@ -38,8 +38,8 @@ class plot_detection_result_node:
         self.M_fft = 513
         self.N = 0
 
-        rospy.Subscriber("/detect_whistle/detection_image", DetectionImage, self.push_detection_data)
-        rospy.Subscriber("/compute_fft/two_mode_fft_data", HydrophoneFFTDataWithClickRemoval, self.push_fft_data)
+        rospy.Subscriber("detect_whistle/detection_image", DetectionImage, self.push_detection_data)
+        rospy.Subscriber("compute_fft/two_mode_fft_data", HydrophoneFFTDataWithClickRemoval, self.push_fft_data)
     # define the function to get the private node parameters setting 
     # for this node from plot_streaming_data.yaml file
     def getParameters(self):
