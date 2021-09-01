@@ -34,8 +34,8 @@ class detect_whistle_node:
 
         self.msg = DetectionImage()
         # define subscriber and publisher
-        rospy.Subscriber("/compute_fft/fft_data_with_click_removal", HydrophoneFFTDataWithClickRemoval, self.pushFFTData)
-        self.pub = rospy.Publisher('/detect_whistle/detection_image', DetectionImage, queue_size=1)
+        rospy.Subscriber("compute_fft/fft_data_with_click_removal", HydrophoneFFTDataWithClickRemoval, self.pushFFTData)
+        self.pub = rospy.Publisher('detect_whistle/detection_image', DetectionImage, queue_size=1)
     def getParameters(self):
         self.DETECTOR_FRAME_ = rospy.get_param("~DETECTOR_FRAME_")
         # Band Pass

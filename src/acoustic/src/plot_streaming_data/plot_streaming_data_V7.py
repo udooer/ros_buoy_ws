@@ -41,8 +41,8 @@ class plot_streaming_data_node:
         self.count_t = 0
         self.count_f = 0
 
-        rospy.Subscriber("/get_sound_data_for2i2/hydrophone_data", HydrophoneData, self.push_hydrophone_data)
-        rospy.Subscriber("/compute_fft/fft_data", HydrophoneFFTData, self.push_fft_data)
+        rospy.Subscriber("get_sound_data_for2i2/hydrophone_data", HydrophoneData, self.push_hydrophone_data)
+        rospy.Subscriber("compute_fft/fft_data", HydrophoneFFTData, self.push_fft_data)
     # define the function to get the private node parameters setting 
     # for this node from plot_streaming_data.yaml file
     def getParameters(self):

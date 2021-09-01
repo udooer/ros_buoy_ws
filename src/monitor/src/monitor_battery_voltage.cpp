@@ -43,8 +43,8 @@ m_n_private("~")
 	m_n_private.getParam("FILE_PATH_", m_file_path);
 	m_n_private.getParam("TIME_INTERVAL_", m_time_interval);
 	
-	m_sub_comm = m_n_public.subscribe("/communication_battery", 1, &monitor_battery_voltage_node::save_comm, this);
-	m_sub_sys = m_n_public.subscribe("/system_battery", 1, &monitor_battery_voltage_node::save_sys, this);
+	m_sub_comm = m_n_public.subscribe("communication_battery", 1, &monitor_battery_voltage_node::save_comm, this);
+	m_sub_sys = m_n_public.subscribe("system_battery", 1, &monitor_battery_voltage_node::save_sys, this);
 	m_filename_comm = m_file_path + "communication_bat.csv";
 	m_filename_sys = m_file_path + "system_bat.csv";
 

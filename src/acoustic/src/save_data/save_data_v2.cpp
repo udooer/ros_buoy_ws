@@ -108,7 +108,7 @@ nh_private("~"), m_count(0)
     ROS_INFO("file length(min):\t%d", FILE_LENGTH_);
 
     // Set ROS subscriber
-    sub = nh_public.subscribe("/get_sound_data_for2i2/hydrophone_data", 1000, &save_data_node::push, this);
+    sub = nh_public.subscribe("get_sound_data_for2i2/hydrophone_data", 1000, &save_data_node::push, this);
 }
 
 /*                                   */
