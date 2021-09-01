@@ -1,0 +1,5 @@
+<launch>
+	<node name="save_data_shoreside" pkg="acoustic" type="save_data_v2" output="screen" clear_params="true">
+		<rosparam command="load" file="$(find acoustic)/config/save_data_shoreside.yaml" />
+	</node>
+</launch>
