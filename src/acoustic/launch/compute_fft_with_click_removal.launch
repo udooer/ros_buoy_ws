@@ -1,5 +1,11 @@
 <launch>
-	<node name="compute_fft_with_click_removal_node" pkg="acoustic" type="compute_fft_with_click_removal.py" output="screen" clear_params="true">
-		<rosparam command="load" file="$(find acoustic)/config/compute_fft.yaml"/>
+	<group ns="buoy">
+		<node name="compute_fft_with_click_removal_node" pkg="acoustic" type="compute_fft_with_click_removal.py" output="screen" clear_params="true">
+			<rosparam command="load" file="$(find acoustic)/config/compute_fft.yaml"/>
+		</node>
+	</group>
+
+	<node pkg="master_discovery_fkie" type="master_discovery" name="master_discovery_node" output="screen">
+		<param name="_mcast_group" value="224.0.0.1"/>
 	</node>
 </launch>

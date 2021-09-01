@@ -1,5 +1,11 @@
 <launch>
-	<node name="detect_whistle_node" pkg="acoustic" type="detect_whistle_v2.py" output="screen" clear_params="true">
-		<rosparam command="load" file="$(find acoustic)/config/detect_whistle.yaml"/>
+	<group ns="buoy">
+		<node name="detect_whistle_node" pkg="acoustic" type="detect_whistle_v2.py" output="screen" clear_params="true">
+			<rosparam command="load" file="$(find acoustic)/config/detect_whistle.yaml"/>
+		</node>
+	</group>
+
+	<node pkg="master_discovery_fkie" type="master_discovery" name="master_discovery_node" output="screen">
+		<param name="_mcast_group" value="224.0.0.1"/>
 	</node>
 </launch>
