@@ -5,9 +5,8 @@
         <param name="port" value="/dev/ttyACM0" />
         <param name="baud" value="57600" />
     </node>
-    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
-        <param name="address" value="192.168.2.101" />
-        <param name="port" value="9080">
-    </include>
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
+    <param name="/rosbridge_websocket/address" value="192.168.2.101" />
+    <param name="/rosbridge_websocket/port" value="9080" />
     <include file="$(find monitor)/launch/monitor_battery_voltage.launch" />
 </launch>
