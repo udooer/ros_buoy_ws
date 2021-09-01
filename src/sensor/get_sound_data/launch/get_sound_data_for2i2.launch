@@ -7,9 +7,5 @@
 	    </node>
 	</group>
 
-    <node pkg="master_discovery_fkie" type="master_discovery" name="master_discovery_node" output="screen">
-		<param name="_mcast_group" value="224.0.0.1"/>
-	</node>
-
 	<node name="rosbag_hydrophone_data" pkg="rosbag" type="record" args="record -o $(find get_sound_data)/bagfiles/hydrophone /get_sound_data_for2i2/hydrophone_data" if="$(arg bag)"/>
 </launch>
