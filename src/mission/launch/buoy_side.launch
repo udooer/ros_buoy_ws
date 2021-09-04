@@ -1,0 +1,13 @@
+<launch>
+    <include file="$(find get_sound_data)/launch/get_sound_data_for2i2.launch" />
+    <include file="$(find acoustic)/launch/save_data_buoy.launch" />
+
+    <!-- multi-master discovery-->
+    <node pkg="master_discovery_fkie" type="master_discovery" name="master_discovery_node" output="screen">
+        <param name="_mcast_group" value="224.0.0.1"/>
+    </node>
+
+    <!-- multi-master sync-->
+    <node pkg="master_sync_fkie" type="master_sync" name="master_sync_node" output="screen">
+    </node>
+</launch>

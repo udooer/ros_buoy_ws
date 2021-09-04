@@ -6,3 +6,5 @@ export ROS_IP=$IP
 export ROS_MASTER_URI=http://$IP:11311
 ifconfig 
 printenv | grep ROS
+sudo sh -c "echo 0 >/proc/sys/net/ipv4/icmp_echo_ignore_broadcasts"
+cat /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
