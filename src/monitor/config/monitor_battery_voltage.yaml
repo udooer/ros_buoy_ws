@@ -1,5 +1,5 @@
 ## Description:	config file for /monitor/monitor_battery_voltage_node
 ## Author: 		Shane
 ## Data: 2021_04_01
-FILE_PATH_    : "/home/ual/data/"
+FILE_PATH_    : "/home/ual/SD/battery_log"
 TIME_INTERVAL_ : 1800

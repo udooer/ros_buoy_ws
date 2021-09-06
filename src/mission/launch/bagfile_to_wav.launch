@@ -1,0 +1,6 @@
+<launch>
+	<remap from="/get_sound_data_for2i2/hydrophone_data" to="/buoy/get_sound_data_for2i2/hydrophone_data"/>
+	<node name="rosbag_hydrophone_data" pkg="rosbag" type="play" args="/home/yong/ros_buoy_ws/bagfiles/2021-06-09-fakewhistletest.bag"/>
+	
+	<include file="$(find acoustic)/launch/save_data_shoreside.launch" />
+</launch>

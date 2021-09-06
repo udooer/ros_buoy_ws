@@ -1,7 +1,10 @@
 <launch>
-    <include file="$(find acoustic)/launch/save_data_shoreside.launch" />
+	<remap from="/get_sound_data_for2i2/hydrophone_data" to="/buoy/get_sound_data_for2i2/hydrophone_data"/>
+	<node name="rosbag_hydrophone_data_play" pkg="rosbag" type="play" args="/home/yong/ros_buoy_ws/bagfiles/2021-06-09-fakewhistletest.bag"/>
+	
+	<include file="$(find acoustic)/launch/save_data_shoreside.launch" />
 
-    <arg name="bag" default="false"/>
+	<arg name="bag" default="false"/>
     <node name="rosbag_hydrophone_data_record" pkg="rosbag" type="record" args="record -o /home/yong/SD/bagfiles/day_1/ /buoy/get_sound_data_for2i2/hydrophone_data" if="$(arg bag)"/>
 
     <include file="$(find acoustic)/launch/compute_fft.launch" />
